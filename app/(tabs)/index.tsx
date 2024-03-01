@@ -49,7 +49,16 @@ export default function TabOneScreen() {
 			/>
 			<ScrollView className="flex flex-col w-full h-full">
 				{photosList.map(pL => (
-					<Post key={pL.id} name={pL.slug} author={pL.user.username} pfp={pL.user.profile_image.small} desc={pL.description} url={pL.urls.regular} />
+					<Post 
+						key={pL.id} 
+						name={pL.slug} 
+						author={pL.user.username} 
+						pfp={pL.user.profile_image.small}  
+						desc={pL.description} 
+						url={pL.urls.regular} 
+						likes={pL.likes}	
+						date={pL.updated_at}
+					/>
 				))}
 			</ScrollView>
 		</View>
