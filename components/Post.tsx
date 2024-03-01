@@ -3,7 +3,13 @@ import { Text, View, Image, Pressable } from 'react-native';
 
 import { AntDesign } from '@expo/vector-icons';
 
+type likedPhoto = {
+    id: string;
+    isLiked: boolean;
+}
+
 export default function Post(props: {
+    id: string;
     name: string;
     author: string;
     pfp: string;
@@ -11,6 +17,7 @@ export default function Post(props: {
     url: string;
     likes: string;
     date: string;
+    onLikeChange: (data: likedPhoto) => void;
 }) {
 
     const [isLiked, setIsLiked] = useState(false);
@@ -28,7 +35,12 @@ export default function Post(props: {
         } else {
             return `uploaded ${minutesDifference} ${minutesDifference === 1 ? 'minute' : 'minutes'} ago`;
         }
-    }
+    };
+
+    const handleLiked = () => {
+        setIsLiked(!isLiked);
+        props.onLikeChange({ id: props.id, isLiked: !isLiked });
+    };
 
     return (
         <View className="flex flex-col w-full gap-2 p-2 mb-5 border-2 dark:border-white rounded-md">
@@ -51,7 +63,7 @@ export default function Post(props: {
             <View className="flex flex-row w-full gap-1">
                 <Text className="shrink dark:text-slate-300 text-md font-normal line-clamp-1">{formatUploadTime(props.date)}</Text>
                 <View className="grow" />
-                <Pressable onPress={() => setIsLiked(!isLiked)}>
+                <Pressable onPress={handleLiked}>
                     <View className="shrink flex flex-row gap-1 p-1 items-center border-2 dark:border-white rounded-md">
                         { isLiked ? <AntDesign name="heart" size={13} color="white" /> : <AntDesign name="hearto" size={13} color="white" /> }
                         <Text className="dark:text-white text-md font-normal line-clamp-1">{isLiked ? parseInt(props.likes, 10) + 1 : parseInt(props.likes, 10)}</Text>

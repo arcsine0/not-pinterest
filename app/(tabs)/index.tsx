@@ -14,6 +14,11 @@ export default function TabOneScreen() {
 		[key: string]: any;
 	};
 
+	type LikedPhoto = {
+		id: string;
+		isLiked: boolean;
+	}
+
 	const getPhotos = async () => {
 		try {
 			const response = await fetch("https://api.unsplash.com/photos/?client_id=jpWz1czVc9VObwHMBIWVNgCnPbcZb_xvqmb4Fc-ntl8", {
@@ -26,6 +31,24 @@ export default function TabOneScreen() {
 			console.error(error);
 		}
 	}
+
+	const handleLiked = (data: LikedPhoto) => {
+		// setPhotosList((prev) => 
+		// 	prev.map((photo) => 
+		// 		photo.id === data.id ? { ...photo, isLiked: data.isLiked } : photo
+		// 	)
+		// );
+
+		setPhotosList((prev) => {
+			const temp = prev.map((photo) =>
+				photo.id === data.id ? { ...photo, isLiked: data.isLiked } : photo
+			);
+
+			console.log(temp.map(pL => pL.isLiked ? pL.id : null));
+
+			return temp;
+		})
+	};
 
 	useEffect(() => {
 		getPhotos().then((results: Photo[]) => {
@@ -51,6 +74,7 @@ export default function TabOneScreen() {
 				{photosList.map(pL => (
 					<Post 
 						key={pL.id} 
+						id={pL.id}
 						name={pL.slug} 
 						author={pL.user.username} 
 						pfp={pL.user.profile_image.small}  
@@ -58,6 +82,8 @@ export default function TabOneScreen() {
 						url={pL.urls.regular} 
 						likes={pL.likes}	
 						date={pL.updated_at}
+
+						onLikeChange={handleLiked}
 					/>
 				))}
 			</ScrollView>
