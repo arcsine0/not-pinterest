@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, Pressable } from 'react-native';
 
 import { AntDesign } from '@expo/vector-icons';
 
@@ -12,6 +12,8 @@ export default function Post(props: {
     likes: string;
     date: string;
 }) {
+
+    const [isLiked, setIsLiked] = useState(false);
 
     const formatUploadTime = (uploadDateString: string): string => {
         const uploadDate = new Date(uploadDateString);
@@ -49,10 +51,12 @@ export default function Post(props: {
             <View className="flex flex-row w-full gap-1">
                 <Text className="shrink dark:text-slate-300 text-md font-normal line-clamp-1">{formatUploadTime(props.date)}</Text>
                 <View className="grow" />
-                <View className="shrink flex flex-row gap-1 p-1 items-center border-2 dark:border-white rounded-md">
-                    <AntDesign name="hearto" size={13} color="white" />
-                    <Text className="dark:text-white text-md font-normal line-clamp-1">{props.likes}</Text>
-                </View>
+                <Pressable onPress={() => setIsLiked(!isLiked)}>
+                    <View className="shrink flex flex-row gap-1 p-1 items-center border-2 dark:border-white rounded-md">
+                        { isLiked ? <AntDesign name="heart" size={13} color="white" /> : <AntDesign name="hearto" size={13} color="white" /> }
+                        <Text className="dark:text-white text-md font-normal line-clamp-1">{isLiked ? parseInt(props.likes, 10) + 1 : parseInt(props.likes, 10)}</Text>
+                    </View>
+                </Pressable>
             </View>
         </View>
     )
