@@ -6,6 +6,38 @@ import Post from "@/components/Post";
 export default function TabOneScreen() {
 	const [query, setQuery] = useState("");
 
+	const [photoIDList, setPhotoIDList] = useState<(string | number)[]>([]);
+	const [photosList, setPhotosList] = useState<Photo[]>([]);
+
+	type Photo = {
+		id: string;
+		[key: string]: any;
+	};
+
+	const getPhotos = async () => {
+		try {
+			const response = await fetch("https://api.unsplash.com/photos/?client_id=jpWz1czVc9VObwHMBIWVNgCnPbcZb_xvqmb4Fc-ntl8", {
+				method: "GET",
+				headers: { "Content-Type": "application/json" }
+			});
+			const json = await response.json();
+			return json;
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	useEffect(() => {
+		getPhotos().then((results: Photo[]) => {
+			results.forEach((res) => {
+				if (!photoIDList.includes(res.id)) {
+					setPhotoIDList(prev => [...prev, res.id]);
+					setPhotosList(prev => [...prev, res]);
+				}
+			});
+		});
+	}, []);
+
 	return (
 		<View className="flex flex-col w-screen h-screen px-3 py-10 gap-5 justify-start items-center">
 			<TextInput
@@ -15,8 +47,10 @@ export default function TabOneScreen() {
 				onChangeText={e => setQuery(e)}
 				defaultValue={query}
 			/>
-			<ScrollView className="flex flex-col w-full gap-2">
-				<Post name="test" author="test" />
+			<ScrollView className="flex flex-col w-full h-full">
+				{photosList.map(pL => (
+					<Post key={pL.id} name={pL.slug} author={pL.user.username} pfp={pL.user.profile_image.small} desc={pL.description} url={pL.urls.regular} />
+				))}
 			</ScrollView>
 		</View>
 	);
