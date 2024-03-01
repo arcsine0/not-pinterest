@@ -1,31 +1,24 @@
-import { StyleSheet } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { Text, TextInput, View, ScrollView } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+import Post from "@/components/Post";
 
 export default function TabOneScreen() {
+	const [query, setQuery] = useState("");
+
 	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>This is the first tab</Text>
-			<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-			<EditScreenInfo path="app/(tabs)/index.tsx" />
+		<View className="flex flex-col w-screen h-screen px-3 py-10 gap-5 justify-start items-center">
+			<TextInput
+				className="px-5 py-2 w-full sticky mt-5 dark:text-white border-2 dark:border-white rounded-md"
+				placeholder="Search for any pictures..."
+				placeholderTextColor="#AAA"
+				onChangeText={e => setQuery(e)}
+				defaultValue={query}
+			/>
+			<ScrollView className="flex flex-col w-full gap-2">
+				<Post name="test" author="test" />
+			</ScrollView>
 		</View>
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	title: {
-		fontSize: 20,
-		fontWeight: 'bold',
-	},
-	separator: {
-		marginVertical: 30,
-		height: 1,
-		width: '80%',
-	},
-});
