@@ -8,6 +8,7 @@ export default function TabOneScreen() {
 
 	const [photoIDList, setPhotoIDList] = useState<(string | number)[]>([]);
 	const [photosList, setPhotosList] = useState<Photo[]>([]);
+	const [likedPhotos, setLikedPhotos] = useState<LikedPhotoList[]>([]);
 
 	type Photo = {
 		id: string;
@@ -17,6 +18,16 @@ export default function TabOneScreen() {
 	type LikedPhoto = {
 		id: string;
 		isLiked: boolean;
+	};
+
+	type LikedPhotoList = {
+		id: string;
+		name: string;
+		author: string;
+		desc: string;
+		date: string;
+		pfp: string;
+		url: string;
 	}
 
 	const getPhotos = async () => {
@@ -33,21 +44,25 @@ export default function TabOneScreen() {
 	}
 
 	const handleLiked = (data: LikedPhoto) => {
-		// setPhotosList((prev) => 
-		// 	prev.map((photo) => 
-		// 		photo.id === data.id ? { ...photo, isLiked: data.isLiked } : photo
-		// 	)
-		// );
-
-		setPhotosList((prev) => {
-			const temp = prev.map((photo) =>
-				photo.id === data.id ? { ...photo, isLiked: data.isLiked } : photo
-			);
-
-			console.log(temp.map(pL => pL.isLiked ? pL.id : null));
-
-			return temp;
-		})
+		if (data.isLiked) {
+			const temp = photosList.find(pL => pL.id === data.id);
+			if (temp) {
+				setLikedPhotos(prev => [...prev, {
+					id: temp.id,
+					name: temp.name,
+					author: temp.author,
+					desc: temp.desc,
+					date: temp.date,
+					pfp: temp.pfp,
+					url: temp.url
+				}]);
+			}
+		} else {
+			const temp = likedPhotos.find(pH => pH.id === data.id);
+			if (temp) {
+				setLikedPhotos(likedPhotos.filter(pH => pH.id === data.id));
+			}
+		}
 	};
 
 	useEffect(() => {
@@ -72,17 +87,17 @@ export default function TabOneScreen() {
 			/>
 			<ScrollView className="flex flex-col w-full h-full">
 				{photosList.map(pL => (
-					<Post 
-						key={pL.id} 
+					<Post
+						key={pL.id}
 						id={pL.id}
-						name={pL.slug} 
-						author={pL.user.username} 
-						pfp={pL.user.profile_image.small}  
-						desc={pL.description} 
-						url={pL.urls.regular} 
-						likes={pL.likes}	
+						name={pL.slug}
+						author={pL.user.username}
+						desc={pL.description}
 						date={pL.updated_at}
-
+						pfp={pL.user.profile_image.small}
+						url={pL.urls.regular}
+						likes={pL.likes}
+						
 						onLikeChange={handleLiked}
 					/>
 				))}

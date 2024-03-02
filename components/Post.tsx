@@ -12,11 +12,12 @@ export default function Post(props: {
     id: string;
     name: string;
     author: string;
-    pfp: string;
     desc: string;
+    date: string;
+    pfp: string;
     url: string;
     likes: string;
-    date: string;
+    
     onLikeChange: (data: likedPhoto) => void;
 }) {
 
