@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Text, View, Image, Pressable } from 'react-native';
+import { Link } from "expo-router";
 
 import { AntDesign } from '@expo/vector-icons';
 
@@ -17,7 +18,7 @@ export default function Post(props: {
     pfp: string;
     url: string;
     likes: string;
-    
+
     onLikeChange: (data: likedPhoto) => void;
 }) {
 
@@ -52,12 +53,16 @@ export default function Post(props: {
                 />
                 <Text className="dark:text-white text-md font-semibold">{props.author}</Text>
             </View>
-            <View className="flex w-500px h-500px justify-center items-center border-2 dark:border-white rounded-md">
-                <Image
-                    source={{ uri: props.url }}
-                    className="w-full aspect-square"
-                />
-            </View>
+            <Link push href={{ pathname: "/post/[id]", params: { id: props.id } }} asChild>
+                <Pressable>
+                    <View className="flex w-500px h-500px justify-center items-center border-2 dark:border-white rounded-md">
+                        <Image
+                            source={{ uri: props.url }}
+                            className="w-full aspect-square"
+                        />
+                    </View>
+                </Pressable>
+            </Link>
             <View className="flex flex-row w-full">
                 <Text className="dark:text-white text-md font-semibold line-clamp-1">{props.name}</Text>
             </View>
@@ -66,7 +71,7 @@ export default function Post(props: {
                 <View className="grow" />
                 <Pressable onPress={handleLiked}>
                     <View className="shrink flex flex-row gap-1 p-1 items-center border-2 dark:border-white rounded-md">
-                        { isLiked ? <AntDesign name="heart" size={13} color="white" /> : <AntDesign name="hearto" size={13} color="white" /> }
+                        {isLiked ? <AntDesign name="heart" size={13} color="white" /> : <AntDesign name="hearto" size={13} color="white" />}
                         <Text className="dark:text-white text-md font-normal line-clamp-1">{isLiked ? parseInt(props.likes, 10) + 1 : parseInt(props.likes, 10)}</Text>
                     </View>
                 </Pressable>

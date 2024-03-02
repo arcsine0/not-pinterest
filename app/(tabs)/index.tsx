@@ -15,6 +15,12 @@ export default function TabOneScreen() {
 		[key: string]: any;
 	};
 
+	type SearchedPhotos = {
+		total: number;
+		total_pages: number;
+		results: Array<Photo>;
+	}
+
 	type LikedPhoto = {
 		id: string;
 		isLiked: boolean;
@@ -40,6 +46,45 @@ export default function TabOneScreen() {
 			return json;
 		} catch (error) {
 			console.error(error);
+		}
+	};
+
+	const searchPhotos = async () => {
+		try {
+			const response = await fetch(`https://api.unsplash.com/search/photos/?client_id=jpWz1czVc9VObwHMBIWVNgCnPbcZb_xvqmb4Fc-ntl8&query=${query}`, {
+				method: "GET",
+				headers: { "Content-Type": "application/json" }
+			});
+			const json = await response.json();
+			return json;
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const handleSubmitQuery = () => {
+		setPhotosList([]);
+		setPhotoIDList([]);
+
+		if (query.length === 0) {
+			getPhotos().then((results: Photo[]) => {
+				results.forEach((res) => {
+					if (!photoIDList.includes(res.id)) {
+						setPhotoIDList(prev => [...prev, res.id]);
+						setPhotosList(prev => [...prev, res]);
+					}
+				});
+			});
+		} else {
+			searchPhotos().then((res: SearchedPhotos) => {
+				res.results.forEach((pH) => {
+					if (!photoIDList.includes(pH.id)) {
+						setPhotoIDList(prev => [...prev, pH.id]);
+						setPhotosList(prev => [...prev, pH]);
+					}
+				})
+			})
+
 		}
 	}
 
@@ -83,6 +128,7 @@ export default function TabOneScreen() {
 				placeholder="Search for any pictures..."
 				placeholderTextColor="#AAA"
 				onChangeText={e => setQuery(e)}
+				onSubmitEditing={handleSubmitQuery}
 				defaultValue={query}
 			/>
 			<ScrollView className="flex flex-col w-full h-full">
