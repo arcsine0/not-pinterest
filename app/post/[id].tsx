@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
+import Tag from '@/components/Tag';
+
 export default function Post() {
     const [photo, setPhoto] = useState<Photo>();
 
@@ -12,6 +14,10 @@ export default function Post() {
         id: string;
         [key: string]: any;
     };
+
+    type Tag = {
+        title: string;
+    }
 
     const getPhoto = async () => {
         try {
@@ -35,21 +41,28 @@ export default function Post() {
     return (
         <ScrollView className="flex flex-col w-screen h-screen">
             <View className="flex w-screen h-3/4 mb-5 justify-center items-center">
-                {photo ? 
-                <Image
-                    source={{ uri: photo.urls.full }}
-                    className="w-screen aspect-square"
-                /> :
-                <Text className="text-sm dark:text-white">Image Loading...</Text>
+                {photo ?
+                    <Image
+                        source={{ uri: photo.urls.full }}
+                        className="w-screen aspect-square"
+                    /> :
+                    <Text className="text-sm dark:text-white">Image Loading...</Text>
                 }
             </View>
             <View className="flex flex-col w-full p-2 border-2 dark:border-white rounded-md">
                 {photo ?
                     <View>
-                        <Text className="text-3xl font-semibold dark:text-white">{photo.description}</Text>
+                        <Text className="text-3xl font-semibold dark:text-white">
+                            {photo.description ? photo.description : "No Title"}
+                        </Text>
                         <Text className="text-lg dark:text-white">{photo.created_at}</Text>
+                        <View className="flex flex-row gap-2 flex-wrap">
+                            {photo.tags.forEach((tag: Tag) => (
+                                <Tag title={tag.title} />
+                            ))}
+                        </View>
                     </View>
-                : <></>}
+                    : <></>}
             </View>
         </ScrollView>
     );
