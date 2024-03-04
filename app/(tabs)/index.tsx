@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Text, TextInput, View, ScrollView } from 'react-native';
 
+import { doc, collection, getDoc, addDoc, deleteDoc } from "firebase/firestore";
+import { db } from "../../firebase/config";
+
 import Post from "@/components/Post";
 
 export default function TabOneScreen() {
@@ -28,6 +31,7 @@ export default function TabOneScreen() {
 
 	type LikedPhotoList = {
 		id: string;
+		dbID: string;
 		name: string;
 		author: string;
 		desc: string;
@@ -88,24 +92,33 @@ export default function TabOneScreen() {
 		}
 	}
 
-	const handleLiked = (data: LikedPhoto) => {
+	const handleLiked = async (data: LikedPhoto) => {
 		if (data.isLiked) {
 			const temp = photosList.find(pL => pL.id === data.id);
 			if (temp) {
-				setLikedPhotos(prev => [...prev, {
+				const likedRef = await addDoc(collection(db, "Liked"), {
 					id: temp.id,
 					name: temp.name,
-					author: temp.author,
-					desc: temp.desc,
-					date: temp.date,
-					pfp: temp.pfp,
 					url: temp.url
-				}]);
+				});
+				if (likedRef.id) {
+					setLikedPhotos(prev => [...prev, {
+						id: temp.id,
+						dbID: likedRef.id,
+						name: temp.name,
+						author: temp.author,
+						desc: temp.desc,
+						date: temp.date,
+						pfp: temp.pfp,
+						url: temp.url
+					}]);
+				}
 			}
 		} else {
 			const temp = likedPhotos.find(pH => pH.id === data.id);
 			if (temp) {
 				setLikedPhotos(likedPhotos.filter(pH => pH.id === data.id));
+				deleteDoc(doc(db, "Liked", temp.dbID));
 			}
 		}
 	};
