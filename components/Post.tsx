@@ -71,7 +71,7 @@ export default function Post(props: {
                 <View className="grow" />
                 <Pressable onPress={handleLiked}>
                     <View className="shrink flex flex-row gap-1 p-1 items-center border-2 dark:border-white rounded-md">
-                        {isLiked ? <AntDesign name="heart" size={13} color="#ff4e47" /> : <AntDesign name="hearto" size={13} color="black" />}
+                        {isLiked ? <AntDesign name="heart" size={13} color="#ff4e47" /> : <AntDesign name="hearto" size={13} color="white" />}
                         <Text className="dark:text-white text-md font-normal line-clamp-1">{isLiked ? parseInt(props.likes, 10) + 1 : parseInt(props.likes, 10)}</Text>
                     </View>
                 </Pressable>
