@@ -4,9 +4,12 @@ import { Text, TextInput, View, ScrollView } from 'react-native';
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import Post from "@/components/Post";
 
 export default function Home() {
+	const [uid, setUID] = useState("");
 	const [query, setQuery] = useState("");
 
 	const [photoIDList, setPhotoIDList] = useState<(string | number)[]>([]);
@@ -95,7 +98,7 @@ export default function Home() {
 		if (data.isLiked) {
 			const temp = photosList.find(pL => pL.id === data.id);
 			if (temp) {
-				await setDoc(doc(db, "Liked", temp.id), {
+				await setDoc(doc(db, "Accounts", uid, "Liked", temp.id), {
 					url: temp.urls.regular
 				  });
 				setLikedPhotos(prev => [...prev, {
@@ -112,12 +115,21 @@ export default function Home() {
 			const temp = likedPhotos.find(pH => pH.id === data.id);
 			if (temp) {
 				setLikedPhotos(likedPhotos.filter(pH => pH.id === data.id));
-				deleteDoc(doc(db, "Liked", temp.id));
+				deleteDoc(doc(db, "Accounts", uid, "Liked", temp.id));
 			}
 		}
 	};
 
 	useEffect(() => {
+		const getData = async () => {
+			const dataStr = await AsyncStorage.getItem("data");
+			if (dataStr) {
+				const data = JSON.parse(dataStr);
+				setUID(data.id);
+			}
+		}
+
+		getData();
 		getPhotos().then((results: Photo[]) => {
 			results.forEach((res) => {
 				if (!photoIDList.includes(res.id)) {

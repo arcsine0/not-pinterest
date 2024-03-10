@@ -19,12 +19,12 @@ export default function Login() {
                 await signInWithEmailAndPassword(auth, email, pass)
                     .then(async (cred) => {
                         const user = cred.user
-                        await AsyncStorage.setItem("id", user.uid);
 
                         await getDoc(doc(db, "Accounts", user.uid))
                             .then(async (sn) => {
                                 try {
                                     const data = {
+                                        id: user.uid,
                                         displayName: sn.data()?.displayName,
                                         userName: sn.data()?.userName
                                     }
