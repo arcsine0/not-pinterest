@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { View, Text, TextInput, Button } from "react-native";
+import { View, Text, TextInput, Button, Pressable } from "react-native";
 import { Link, router } from "expo-router";
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -41,6 +41,19 @@ export default function Login() {
         }
     };
 
+    // const handleGoogleLogin = async () => {
+    //     try {
+    //         const provider = new GoogleAuthProvider();
+    //         await signInWithPopup(auth, provider) 
+    //             .then(async (res) => {
+    //                 const user = res.user;
+    //                 console.log(user.uid);
+    //             })
+    //     } catch(error) {
+    //         console.log(error);
+    //     }
+    // }
+
     return (
         <View className="flex flex-col w-screen h-screen justify-center items-center gap-5">
             <View className="flex flex-col w-full px-5 gap-5">
@@ -65,12 +78,18 @@ export default function Login() {
                         defaultValue={pass}
                     />
                 </View>
-                <Button
-                    title="Log In"
-                    onPress={handleDefaultLogin}
-                />
+                <View className="flex w-full py-2 bg-indigo-500 rounded-md items-center">
+                    <Pressable onPress={handleDefaultLogin}>
+                        <Text className="text-lg text-white font-semibold">Log In</Text>
+                    </Pressable>
+                </View>
                 <Text className="text-lg dark:text-gray-400">No Account Yet?</Text>
                 <Link push href={"/Register"} className="text-lg text-blue-500">Create an Account</Link>
+                {/* <View className="flex w-full py-2 bg-white rounded-md items-center">
+                    <Pressable onPress={handleGoogleLogin}>
+                        <Text className="text-lg text-black font-semibold">Log In with Google</Text>
+                    </Pressable>
+                </View> */}
             </View>
 
         </View>
