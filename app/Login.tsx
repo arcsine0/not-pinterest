@@ -14,6 +14,7 @@ export default function Login() {
     const [pass, setPass] = useState("");
 
     const handleDefaultLogin = async () => {
+        router.push("/(tabs)")
         if (pass.length > 0) {
             try {
                 await signInWithEmailAndPassword(auth, email, pass)

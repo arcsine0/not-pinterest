@@ -15,6 +15,7 @@ export {
 
 export const unstable_settings = {
 	initialRouteName: '(tabs)',
+	registerRouteName: 'Register'
 };
 
 SplashScreen.preventAutoHideAsync();
