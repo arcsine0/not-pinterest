@@ -40,6 +40,7 @@ export default function Pass() {
                                         userName: creds.userName
                                     });
 
+                                    await AsyncStorage.removeItem("creds");
                                     router.replace("/Login");
                                 });
                         } catch (error) {

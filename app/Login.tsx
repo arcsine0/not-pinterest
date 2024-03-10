@@ -14,20 +14,21 @@ export default function Login() {
     const [pass, setPass] = useState("");
 
     const handleDefaultLogin = async () => {
-        router.push("/(tabs)")
         if (pass.length > 0) {
             try {
                 await signInWithEmailAndPassword(auth, email, pass)
                     .then(async (cred) => {
                         const user = cred.user
-
                         await AsyncStorage.setItem("id", user.uid);
 
                         await getDoc(doc(db, "Accounts", user.uid))
                             .then(async (sn) => {
                                 try {
-                                    await AsyncStorage.setItem("displayName", sn.data()?.displayName);
-                                    await AsyncStorage.setItem("userName", sn.data()?.userName);
+                                    const data = {
+                                        displayName: sn.data()?.displayName,
+                                        userName: sn.data()?.userName
+                                    }
+                                    await AsyncStorage.setItem("data", JSON.stringify(data));
 
                                     router.replace("/(tabs)");
                                 } catch (error) {
