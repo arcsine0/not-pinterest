@@ -13,10 +13,47 @@ export default function Pass() {
     const [pass, setPass] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
 
+    const [submitLabel, setSubmitLabel] = useState("Submit");
+    const [submitDisable, setSubmitDisable] = useState(false);
+
+    const regex = /^(?=.*[a-zA-Z0-9])(?=.*[_\-#])[a-zA-Z0-9_\-#]+$/;
+
     const handleSubmit = async () => {
-        // await createUserWithEmailAndPassword(auth, )
+        setSubmitLabel("Submitting...");
+        setSubmitDisable(true);
+
+        const credsStr = await AsyncStorage.getItem("creds");
+        if (credsStr !== null) {
+            const creds = JSON.parse(credsStr);
+
+            if (pass.length >= 6) {
+                if (regex.test(pass)) {
+                    if (pass === confirmPass) {
+                        try {
+                            creds.pass = pass;
+
+                            createUserWithEmailAndPassword(auth, creds.email, creds.pass)
+                                .then(async (cred) => {
+                                    const user = cred.user;
+                                    await setDoc(doc(db, "Accounts", user.uid), {
+                                        displayName: creds.displayName,
+                                        userName: creds.userName
+                                    });
+
+                                    router.replace("/Login");
+                                });
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    } else { console.log("Confirm Password Mismatch") }
+                } else { console.log("Password should contain symbols [_, -, #] and numbers") }
+            } else { console.log("Password needs to be at least 6 characters long") }
+        }
+
+        setSubmitLabel("Submit");
+        setSubmitDisable(false);
     };
-    
+
     return (
         <View className="flex flex-col w-screen h-screen justify-start items-center gap-5">
             <View className="flex flex-col w-full mt-44 px-5 gap-5">
@@ -43,8 +80,8 @@ export default function Pass() {
                 </View>
                 <View className="flex w-full gap-2">
                     <View className="flex w-full py-2 bg-indigo-500 rounded-md items-center">
-                        <Pressable onPress={handleSubmit}>
-                            <Text className="text-lg text-white font-semibold">Create Account</Text>
+                        <Pressable disabled={submitDisable} onPress={handleSubmit}>
+                            <Text className="text-lg text-white font-semibold">{submitLabel}</Text>
                         </Pressable>
                     </View>
                 </View>

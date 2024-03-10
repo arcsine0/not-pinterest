@@ -14,8 +14,22 @@ export default function Register() {
     
     const [displayName, setDisplayName] = useState("");
     const [userName, setUserName] = useState("");
+
+    const [nextDisable, setNextDisable] = useState(false);
     
-    const handleNext = () => {
+    const handleNext = async () => {
+        setNextDisable(true);
+
+        const creds = {
+            email: email,
+            displayName: displayName,
+            userName: userName,
+            pass: null
+        }
+
+        await AsyncStorage.setItem("creds", JSON.stringify(creds));
+
+        setNextDisable(false);
         router.push("/(register)/Pass");
     };
 
@@ -55,7 +69,7 @@ export default function Register() {
                 </View>
                 <View className="flex w-full gap-2">
                     <View className="flex w-full py-2 bg-indigo-500 rounded-md items-center">
-                        <Pressable onPress={handleNext}>
+                        <Pressable disabled={nextDisable} onPress={handleNext}>
                             <Text className="text-lg text-white font-semibold">Next</Text>
                         </Pressable>
                     </View>
