@@ -14,9 +14,11 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@react-native-async-storage/async-storage": "1.21.0",
     "@react-navigation/native": "^6.0.2",
     "boring-avatars": "^1.10.1",
     "expo": "~50.0.8",
+    "expo-dev-client": "~3.3.9",
     "expo-font": "~11.10.3",
     "expo-linking": "~6.2.2",
     "expo-router": "~3.4.7",
@@ -36,8 +38,7 @@
     "react-native-svg": "^15.1.0",
     "react-native-web": "~0.19.6",
     "tailwindcss": "^3.4.1",
-    "validator": "^13.11.0",
-    "@react-native-async-storage/async-storage": "1.21.0"
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

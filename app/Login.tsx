@@ -4,7 +4,7 @@ import { View, Text, TextInput, Button, Pressable } from "react-native";
 import { Link, router } from "expo-router";
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { db, auth } from "../firebase/config";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -42,23 +42,10 @@ export default function Login() {
         }
     };
 
-    // const handleGoogleLogin = async () => {
-    //     try {
-    //         const provider = new GoogleAuthProvider();
-    //         await signInWithPopup(auth, provider) 
-    //             .then(async (res) => {
-    //                 const user = res.user;
-    //                 console.log(user.uid);
-    //             })
-    //     } catch(error) {
-    //         console.log(error);
-    //     }
-    // }
-
     return (
         <View className="flex flex-col w-screen h-screen justify-center items-center gap-5">
             <View className="flex flex-col w-full px-5 gap-5">
-                <Text className="mb-5 text-5xl dark:text-white font-bold">Not-Pinterest</Text>
+                <Text className="mb-2 text-5xl dark:text-white font-bold">Not-Pinterest</Text>
                 <View className="flex flex-col w-full gap-2">
                     <Text className="text-md dark:text-white">Email</Text>
                     <TextInput
@@ -85,12 +72,7 @@ export default function Login() {
                     </Pressable>
                 </View>
                 <Text className="text-lg dark:text-gray-400">No Account Yet?</Text>
-                <Link push href={"/Register"} className="text-lg text-blue-500">Create an Account</Link>
-                {/* <View className="flex w-full py-2 bg-white rounded-md items-center">
-                    <Pressable onPress={handleGoogleLogin}>
-                        <Text className="text-lg text-black font-semibold">Log In with Google</Text>
-                    </Pressable>
-                </View> */}
+                <Link push href={"/(register)"} className="text-lg text-blue-500">Create an Account</Link>
             </View>
 
         </View>
