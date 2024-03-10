@@ -7,15 +7,10 @@ import { SimpleGrid } from "react-native-super-grid";
 
 import CollectionCard from "@/components/CollectionCard";
 
-import { doc, collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/config";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-type Thumbnail = {
-	name: string;
-	url: string;
-}
 
 export default function Profile() {
 	const [uid, setUID] = useState("")
@@ -25,6 +20,11 @@ export default function Profile() {
 	const [collectionThumbs, setCollectionThumbs] = useState<Thumbnail[]>([]);
 
 	const defaultThumb = "https://images.unsplash.com/photo-1709833226150-8eaeb6f291d1?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
+	type Thumbnail = {
+		name: string;
+		url: string;
+	}
 
 	useEffect(() => {
 		const getData = async () => {
@@ -47,7 +47,6 @@ export default function Profile() {
 			}
 		}
 		getData();
-
 	}, []);
 
 	return (
