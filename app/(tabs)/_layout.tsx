@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, Feather } from '@expo/vector-icons';
 
 import { Tabs } from 'expo-router';
 
@@ -13,7 +13,7 @@ function TabBarIcon(props: {
 	name: React.ComponentProps<typeof FontAwesome5>['name'];
 	color: string;
 }) {
-	return <FontAwesome5 size={28} style={{ marginBottom: -3 }} {...props} />;
+	return <FontAwesome5 size={24} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -39,6 +39,13 @@ export default function TabLayout() {
 				options={{
 					title: 'Profile',
 					tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="Settings"
+				options={{
+					title: 'Settings',
+					tabBarIcon: ({ color }) => <Feather name="settings" size={24} color={color} />,
 				}}
 			/>
 		</Tabs>

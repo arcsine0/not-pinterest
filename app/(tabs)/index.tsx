@@ -6,7 +6,7 @@ import { db } from "../../firebase/config";
 
 import Post from "@/components/Post";
 
-export default function TabOneScreen() {
+export default function Home() {
 	const [query, setQuery] = useState("");
 
 	const [photoIDList, setPhotoIDList] = useState<(string | number)[]>([]);
