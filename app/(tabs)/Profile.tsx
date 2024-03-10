@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Text, View, ScrollView } from "react-native";
 import { SvgUri } from "react-native-svg";
 
+import { SimpleGrid } from "react-native-super-grid";
+
 import CollectionCard from "@/components/CollectionCard";
 
 import { doc, collection, getDocs } from "firebase/firestore";
@@ -31,36 +33,34 @@ export default function TabTwoScreen() {
 	}, []);
 
 	return (
-		<View className="flex flex-col w-screen h-screen p-5">
+		<View className="w-screen h-screen p-5">
 			<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-				<View className="w-full h-1/6"></View>
-				<View className="flex flex-col w-full gap-2 items-center">
-					<SvgUri
-						uri="https://source.boringavatars.com/beam/"
-						className="w-1/3"
-					/>
-					<Text className="text-3xl mt-5 dark:text-white font-bold">ProfileName</Text>
-					<Text className="text-lg dark:text-white">@username</Text>
-				</View>
-				<View className="flex flex-col w-full h-full mt-10 gap-2">
-					<Text className="text-3xl dark:text-white font-bold">Collections</Text>
-					<View className="grid grid-cols-2 gap-2">
-						<CollectionCard
-							name="Liked Posts"
-							thumb={collectionThumbs.find(cT => cT.name === "Liked")?.url || defaultThumb}
+				<View>
+					<View className="w-full mt-20"></View>
+					<View className="flex flex-col w-full gap-2 items-center">
+						<SvgUri
+							uri="https://source.boringavatars.com/beam/"
+							className="w-1/3"
 						/>
-						<CollectionCard
-							name="Liked Posts"
-							thumb={collectionThumbs.find(cT => cT.name === "Liked")?.url || defaultThumb}
-						/>
-						<CollectionCard
-							name="Liked Posts"
-							thumb={collectionThumbs.find(cT => cT.name === "Liked")?.url || defaultThumb}
-						/>
+						<Text className="text-3xl mt-5 dark:text-white font-bold">ProfileName</Text>
+						<Text className="text-lg dark:text-white">@username</Text>
+					</View>
+					<View className="flex flex-col w-full mt-20 gap-2">
+						<Text className="text-3xl dark:text-white font-bold">Collections</Text>
+						<View className="flex flex-row flex-wrap gap-1">
+							<CollectionCard
+								name="Liked Posts"
+								thumb={collectionThumbs.find(cT => cT.name === "Liked")?.url || defaultThumb}
+							/>
+							<CollectionCard
+								name="Liked Posts"
+								thumb={collectionThumbs.find(cT => cT.name === "Liked")?.url || defaultThumb}
+							/>
+						</View>
 					</View>
 				</View>
 			</ScrollView>
-			
+
 		</View>
 	);
 }
