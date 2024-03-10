@@ -41,7 +41,7 @@ export default function Pass() {
                                     });
 
                                     await AsyncStorage.removeItem("creds");
-                                    router.replace("/Login");
+                                    router.replace("/");
                                 });
                         } catch (error) {
                             console.log(error);

@@ -18,6 +18,7 @@ type Thumbnail = {
 }
 
 export default function Profile() {
+	const [uid, setUID] = useState("")
 	const [displayName, setDisplayName] = useState("DisplayName");
 	const [userName, setUserName] = useState("username");
 
@@ -30,21 +31,23 @@ export default function Profile() {
 			const dataStr = await AsyncStorage.getItem("data");
 			if (dataStr) {
 				const data = JSON.parse(dataStr);
+				setUID(data.id);
 				setDisplayName(data.displayName);
 				setUserName(data.userName);
+
+				getDocs(collection(db, "Accounts", data.id, "Liked"))
+					.then((sn) => {
+						const thumb: Thumbnail = {
+							name: "Liked",
+							url: sn.docs[0].data().url
+						}
+
+						setCollectionThumbs(prev => [...prev, thumb]);
+					});
 			}
 		}
 		getData();
 
-		getDocs(collection(db, "Liked"))
-			.then((sn) => {
-				const thumb: Thumbnail = {
-					name: "Liked",
-					url: sn.docs[0].data().url
-				}
-
-				setCollectionThumbs(prev => [...prev, thumb]);
-			});
 	}, []);
 
 	return (

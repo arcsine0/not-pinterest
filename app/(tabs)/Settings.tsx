@@ -13,7 +13,7 @@ export default function Settings() {
         signOut(auth).then(async () => {
             await AsyncStorage.removeItem("data");
 
-            router.replace("/Login");
+            router.replace("/");
         });
     };
 

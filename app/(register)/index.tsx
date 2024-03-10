@@ -74,7 +74,7 @@ export default function Register() {
                         </Pressable>
                     </View>
                 </View>
-                <Link push href={"/Login"} className="text-lg text-blue-500">Go Back</Link>
+                <Link push href={"/"} className="text-lg text-blue-500">Go Back</Link>
             </View>
 
         </View>
