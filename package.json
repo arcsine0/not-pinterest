@@ -37,7 +37,9 @@
     "react-native-svg": "^15.1.0",
     "react-native-web": "~0.19.6",
     "tailwindcss": "^3.4.1",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "expo-blur": "~12.9.2",
+    "@react-native-picker/picker": "2.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

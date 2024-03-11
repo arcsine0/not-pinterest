@@ -4,11 +4,19 @@ import { useLocalSearchParams } from "expo-router";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 
-import Tag from "@/components/Tag";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase/config";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import CollectionModal from "../../components/CollectionModal";
 
 export default function Post() {
     const [photo, setPhoto] = useState<Photo>();
     const [user, setUser] = useState<User>();
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [collectionNames, setCollectionNames] = useState<string[]>([]);
 
     const params = useLocalSearchParams();
     const { id } = params;
@@ -23,9 +31,6 @@ export default function Post() {
         [key: string]: any;
     }
 
-    type Tag = {
-        title: string;
-    }
 
     const getPhoto = async () => {
         try {
@@ -54,16 +59,38 @@ export default function Post() {
     }
 
     const handleAddToCollection = () => {
-        
+        setIsModalVisible(true);
+    }
+
+    const handleCloseModal = () => {
+        setIsModalVisible(false);
     }
 
     useEffect(() => {
-        getPhoto().then((ph: Photo) => {
-            setPhoto(ph);
-            getUser(ph.username).then((us: User) => {
-                setUser(us);
-            })
-        })
+        setCollectionNames([]);
+
+        const getData = async () => {
+            const dataStr = await AsyncStorage.getItem("data");
+            if (dataStr) {
+                const data = JSON.parse(dataStr);
+
+                getDocs(collection(db, "Accounts", data.id, "Collections"))
+                    .then((sn) => {
+                        sn.docs.forEach((doc) => {
+                            setCollectionNames(prev => [...prev, doc.id]);
+                        });
+                    })
+
+                getPhoto().then((ph: Photo) => {
+                    setPhoto(ph);
+                    getUser(ph.username).then((us: User) => {
+                        setUser(us);
+                    })
+                })
+            }
+        }
+        getData();
+        
     }, []);
 
     return (
@@ -86,7 +113,6 @@ export default function Post() {
                         <Text className="text-3xl font-semibold dark:text-white">
                             {photo.description ? photo.description : "No Title"}
                         </Text>
-                        {/* <Text className="text-lg dark:text-white">{photo.created_at}</Text> */}
                         <Pressable 
                             className="flex w-full py-2 bg-indigo-500 active:opacity-50 rounded-md items-center"
                             onPress={handleAddToCollection}
@@ -113,6 +139,9 @@ export default function Post() {
                     </View>
                     : <></>}
             </View>
+            {photo ?
+                <CollectionModal isVisible={isModalVisible} onClose={handleCloseModal} data={photo} collections={collectionNames} />
+            : <></>}
         </ScrollView>
     );
 }

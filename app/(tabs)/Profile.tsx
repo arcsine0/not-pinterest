@@ -29,6 +29,7 @@ export default function Profile() {
 	}
 
 	useEffect(() => {
+		setCollectionThumbs([]);
 		const getData = async () => {
 			const dataStr = await AsyncStorage.getItem("data");
 			if (dataStr) {
@@ -46,6 +47,27 @@ export default function Profile() {
 
 						setCollectionThumbs(prev => [...prev, thumb]);
 					});
+
+				getDocs(collection(db, "Accounts", data.id, "Collections"))
+					.then((sn) => {
+						let collectionNames: string[] = [];
+
+						sn.docs.forEach((doc) => {
+							collectionNames.push(doc.id);
+						})
+
+						collectionNames.forEach((coll) => {
+							getDocs(collection(db, "Accounts", data.id, coll))
+								.then((snp) => {
+									const thumb: Thumbnail = {
+										name: coll,
+										url: snp.docs[0].data().url
+									}
+
+									setCollectionThumbs(prev => [...prev, thumb]);
+								})
+						})
+					})
 			}
 		}
 		getData();
@@ -67,14 +89,13 @@ export default function Profile() {
 					<View className="flex flex-col w-full mt-20 gap-2">
 						<Text className="text-3xl dark:text-white font-bold">Collections</Text>
 						<View className="flex flex-row flex-wrap">
-							<CollectionCard
-								name="Liked"
-								thumb={collectionThumbs.find(cT => cT.name === "Liked")?.url || defaultThumb}
-							/>
-							<CollectionCard
-								name="Liked"
-								thumb={collectionThumbs.find(cT => cT.name === "Liked")?.url || defaultThumb}
-							/>
+							{collectionThumbs.map((cT, i) => (
+								<CollectionCard
+									key={i}
+									name={cT.name}
+									thumb={cT.url || defaultThumb}
+								/>
+							))}
 						</View>
 					</View>
 				</View>

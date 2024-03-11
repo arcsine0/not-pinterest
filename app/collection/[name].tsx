@@ -7,8 +7,6 @@ import { db } from "../../firebase/config";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { FontAwesome5 } from "@expo/vector-icons";
-
 export default function Collection() {
     const [coll, setColl] = useState<Pic[]>([]);
 

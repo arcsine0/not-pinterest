@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { View, Text, TextInput, Button, Pressable } from "react-native";
+import { View, Text, TextInput, Pressable } from "react-native";
 import { Link, router } from "expo-router";
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
