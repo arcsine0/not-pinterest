@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import React, { useState, useEffect } from "react";
+import { Text, View, Image, ScrollView, Pressable } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from "@expo/vector-icons";
 
-import Tag from '@/components/Tag';
+import Tag from "@/components/Tag";
 
 export default function Post() {
     const [photo, setPhoto] = useState<Photo>();
@@ -53,6 +53,10 @@ export default function Post() {
         }
     }
 
+    const handleAddToCollection = () => {
+        
+    }
+
     useEffect(() => {
         getPhoto().then((ph: Photo) => {
             setPhoto(ph);
@@ -63,8 +67,11 @@ export default function Post() {
     }, []);
 
     return (
-        <ScrollView className="flex flex-col w-screen grow">
-            <View className="flex w-screen h-3/4 mb-2 justify-center items-center">
+        <ScrollView
+            className="flex flex-col w-screen grow"
+            contentContainerStyle={{ flexGrow: 1 }}
+        >
+            <View className="flex w-full mb-2 justify-center items-center">
                 {photo ?
                     <Image
                         source={{ uri: photo.urls.full }}
@@ -79,12 +86,13 @@ export default function Post() {
                         <Text className="text-3xl font-semibold dark:text-white">
                             {photo.description ? photo.description : "No Title"}
                         </Text>
-                        <Text className="text-lg dark:text-white">{photo.created_at}</Text>
-                        <View className="flex flex-row gap-2 flex-wrap">
-                            {photo.tags.forEach((tag: Tag) => (
-                                <Tag title={tag.title} />
-                            ))}
-                        </View>
+                        {/* <Text className="text-lg dark:text-white">{photo.created_at}</Text> */}
+                        <Pressable 
+                            className="flex w-full py-2 bg-indigo-500 active:opacity-50 rounded-md items-center"
+                            onPress={handleAddToCollection}
+                        >
+                            <Text className="text-lg text-white font-semibold">Add to Collection</Text>
+                        </Pressable>
                     </View>
                     : <></>}
             </View>
