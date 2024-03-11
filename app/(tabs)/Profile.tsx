@@ -66,7 +66,7 @@ export default function Profile() {
 					</View>
 					<View className="flex flex-col w-full mt-20 gap-2">
 						<Text className="text-3xl dark:text-white font-bold">Collections</Text>
-						<View className="flex flex-row flex-wrap gap-1">
+						<View className="flex flex-row flex-wrap">
 							<CollectionCard
 								name="Liked"
 								thumb={collectionThumbs.find(cT => cT.name === "Liked")?.url || defaultThumb}

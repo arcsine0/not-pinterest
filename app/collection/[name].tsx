@@ -48,14 +48,13 @@ export default function Collection() {
     return (
         <View className="w-screen h-screen p-5">
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <View className="flex flex-wrap w-full">
+                <View className="flex flex-row flex-wrap w-full">
                     {coll.map((pic, i) => (
-                        <View key={i} className="basis-1/2 h-60">
+                        <View key={i} className="basis-1/2 border-2 dark:border-black">
                             <Image
                                 source={{ uri: pic.url }}
-                                className="w-full h-full"
+                                className="w-full aspect-square"
                             />
-                            {/* <Text className="text-2xl dark:text-white w-full">{pic.url}</Text> */}
                         </View>
                     ))}
                 </View>
