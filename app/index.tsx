@@ -67,11 +67,12 @@ export default function Login() {
                         defaultValue={pass}
                     />
                 </View>
-                <View className="flex w-full py-2 bg-indigo-500 rounded-md items-center">
-                    <Pressable onPress={handleDefaultLogin}>
-                        <Text className="text-lg text-white font-semibold">Log In</Text>
-                    </Pressable>
-                </View>
+                <Pressable
+                    className="flex w-full py-2 bg-indigo-500 active:opacity-50 rounded-md items-center"
+                    onPress={handleDefaultLogin}
+                >
+                    <Text className="text-lg text-white font-semibold">Log In</Text>
+                </Pressable>
                 <Text className="text-lg dark:text-gray-400">No Account Yet?</Text>
                 <Link push href={"/(register)"} className="text-lg text-blue-500">Create an Account</Link>
             </View>
