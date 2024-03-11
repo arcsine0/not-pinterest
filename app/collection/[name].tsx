@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Image, ScrollView } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { Text, View, Image, ScrollView, Pressable } from "react-native";
+import { useLocalSearchParams, Link } from "expo-router";
 
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/config";
@@ -51,10 +51,18 @@ export default function Collection() {
                 <View className="flex flex-row flex-wrap w-full">
                     {coll.map((pic, i) => (
                         <View key={i} className="basis-1/2 border-2 dark:border-black">
-                            <Image
-                                source={{ uri: pic.url }}
-                                className="w-full aspect-square"
-                            />
+                            <Link
+                                href={`/post/${pic.id}`}
+                                className="w-full"
+                                asChild
+                            >
+                                <Pressable>
+                                    <Image
+                                        source={{ uri: pic.url }}
+                                        className="w-full aspect-square"
+                                    />
+                                </Pressable>
+                            </Link>
                         </View>
                     ))}
                 </View>
