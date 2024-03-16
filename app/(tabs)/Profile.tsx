@@ -100,7 +100,6 @@ export default function Profile() {
 					</View>
 				</View>
 			</ScrollView>
-
 		</View>
 	);
 }
