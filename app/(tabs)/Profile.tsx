@@ -9,7 +9,7 @@ import { SimpleGrid } from "react-native-super-grid";
 
 import CollectionCard from "@/components/CollectionCard";
 
-import { collection, getDocs } from "firebase/firestore";
+import { doc, collection, getDocs, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -28,48 +28,51 @@ export default function Profile() {
 		url: string;
 	}
 
+	const getData = async () => {
+		const dataStr = await AsyncStorage.getItem("data");
+		if (dataStr) {
+			const data = JSON.parse(dataStr);
+			setUID(data.id);
+			setDisplayName(data.displayName);
+			setUserName(data.userName);
+
+			getDocs(collection(db, "Accounts", data.id, "Liked"))
+				.then((sn) => {
+					const thumb: Thumbnail = {
+						name: "Liked",
+						url: sn.docs[0].data().url
+					}
+
+					setCollectionThumbs(prev => [...prev, thumb]);
+				});
+
+			getDocs(collection(db, "Accounts", data.id, "Collections"))
+				.then((sn) => {
+					let collectionNames: string[] = [];
+
+					sn.docs.forEach((dc) => {
+						collectionNames.push(dc.id);
+					})
+
+					collectionNames.forEach((coll) => {
+						getDocs(collection(db, "Accounts", data.id, coll))
+							.then((snp) => {
+								const thumb: Thumbnail = {
+									name: coll,
+									url: snp.docs[0].data().url
+								}
+
+								setCollectionThumbs(prev => [...prev, thumb]);
+							}).catch(() => {
+								deleteDoc(doc(db, "Accounts", data.id, "Collections", coll));
+							})
+					});
+				});
+		}
+	}
+
 	useEffect(() => {
 		setCollectionThumbs([]);
-		const getData = async () => {
-			const dataStr = await AsyncStorage.getItem("data");
-			if (dataStr) {
-				const data = JSON.parse(dataStr);
-				setUID(data.id);
-				setDisplayName(data.displayName);
-				setUserName(data.userName);
-
-				getDocs(collection(db, "Accounts", data.id, "Liked"))
-					.then((sn) => {
-						const thumb: Thumbnail = {
-							name: "Liked",
-							url: sn.docs[0].data().url
-						}
-
-						setCollectionThumbs(prev => [...prev, thumb]);
-					});
-
-				getDocs(collection(db, "Accounts", data.id, "Collections"))
-					.then((sn) => {
-						let collectionNames: string[] = [];
-
-						sn.docs.forEach((doc) => {
-							collectionNames.push(doc.id);
-						})
-
-						collectionNames.forEach((coll) => {
-							getDocs(collection(db, "Accounts", data.id, coll))
-								.then((snp) => {
-									const thumb: Thumbnail = {
-										name: coll,
-										url: snp.docs[0].data().url
-									}
-
-									setCollectionThumbs(prev => [...prev, thumb]);
-								})
-						})
-					})
-			}
-		}
 		getData();
 	}, []);
 

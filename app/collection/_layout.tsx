@@ -2,6 +2,6 @@
 
 // export default function Collection() {
 //     return ( 
-//         <Stack screenOptions={{ headerShown: false }}></Stack>
+//         <Stack screenOptions={{  }}></Stack>
 //      )
 // }

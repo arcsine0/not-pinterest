@@ -39,7 +39,9 @@ export default function TabLayout() {
 				options={{
 					title: 'Profile',
 					tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+					unmountOnBlur: true
 				}}
+				
 			/>
 			<Tabs.Screen
 				name="Settings"

@@ -17,6 +17,7 @@ export default function (props: {
             <Link
                 className="w-full aspect-square"
                 href={`/collection/${props.name}`}
+                push
                 asChild
             >
                 <Pressable className="w-full">

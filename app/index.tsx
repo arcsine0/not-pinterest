@@ -63,6 +63,7 @@ export default function Login() {
                         className="px-5 py-2 w-full dark:text-white border-2 dark:border-white rounded-md"
                         placeholder="Enter your password"
                         placeholderTextColor="#AAA"
+                        secureTextEntry={true}
                         onChangeText={(e) => setPass(e)}
                         defaultValue={pass}
                     />

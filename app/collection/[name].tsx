@@ -28,6 +28,7 @@ export default function Collection() {
 
     useEffect(() => {
         setColl([]);
+        setShowMultiSelect(false);
 
         const getData = async () => {
             const dataStr = await AsyncStorage.getItem("data");
@@ -66,12 +67,11 @@ export default function Collection() {
     }, [deleteList]);
 
     const handleDelete = () => {
-        deleteList.forEach(async (pic) => {
-            await deleteDoc(doc(db, "Accounts", accountID, collectionName, pic))
-                .then(() => {
-                    setColl(coll.filter(cl => cl.id !== pic));
-                });
-        })
+        deleteList.forEach((pic) => {
+            deleteDoc(doc(db, "Accounts", accountID, collectionName, pic)).then(() => {
+                setColl(coll.filter(cl => cl.id !== pic));
+            });
+        });
     }
 
     const hideMultiSelect = () => {
