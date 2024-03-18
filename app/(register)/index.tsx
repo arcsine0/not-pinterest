@@ -11,12 +11,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Register() {
     const [email, setEmail] = useState("");
-    
+
     const [displayName, setDisplayName] = useState("");
     const [userName, setUserName] = useState("");
 
     const [nextDisable, setNextDisable] = useState(false);
-    
+
     const handleNext = async () => {
         setNextDisable(true);
 
@@ -68,11 +68,13 @@ export default function Register() {
                     />
                 </View>
                 <View className="flex w-full gap-2">
-                    <View className="flex w-full py-2 bg-indigo-500 rounded-md items-center">
-                        <Pressable disabled={nextDisable} onPress={handleNext}>
-                            <Text className="text-lg text-white font-semibold">Next</Text>
-                        </Pressable>
-                    </View>
+                    <Pressable 
+                        className="flex w-full py-2 bg-indigo-500 rounded-md items-center" 
+                        disabled={nextDisable} 
+                        onPress={handleNext}
+                    >
+                        <Text className="text-lg text-white font-semibold">Next</Text>
+                    </Pressable>
                 </View>
                 <Link push href={"/"} className="text-lg text-blue-500">Go Back</Link>
             </View>

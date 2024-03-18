@@ -80,11 +80,13 @@ export default function Pass() {
                     />
                 </View>
                 <View className="flex w-full gap-2">
-                    <View className="flex w-full py-2 bg-indigo-500 rounded-md items-center">
-                        <Pressable disabled={submitDisable} onPress={handleSubmit}>
-                            <Text className="text-lg text-white font-semibold">{submitLabel}</Text>
-                        </Pressable>
-                    </View>
+                    <Pressable 
+                        className="flex w-full py-2 bg-indigo-500 active:opacity-50 rounded-md items-center" 
+                        disabled={submitDisable} 
+                        onPress={handleSubmit}
+                    >
+                        <Text className="text-lg text-white font-semibold">{submitLabel}</Text>
+                    </Pressable>
                 </View>
                 <Link push href={"/(register)"} className="text-lg text-blue-500">Go Back</Link>
             </View>
