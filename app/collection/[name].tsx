@@ -67,11 +67,18 @@ export default function Collection() {
     }, [deleteList]);
 
     const handleDelete = () => {
-        deleteList.forEach((pic) => {
-            deleteDoc(doc(db, "Accounts", accountID, collectionName, pic)).then(() => {
+        let deleted: string[] = [];
+        deleteList.forEach(async (pic) => {
+            await deleteDoc(doc(db, "Accounts", accountID, collectionName, pic)).then(() => {
                 setColl(coll.filter(cl => cl.id !== pic));
             });
+
         });
+
+        // deleted.forEach((pic) => {
+        //     setColl(coll.filter(cl => cl.id !== pic));
+        // })
+        // setColl(coll.filter(cl => !deleted.includes(cl.id)));
     }
 
     const hideMultiSelect = () => {
